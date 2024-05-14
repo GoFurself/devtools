@@ -1,17 +1,13 @@
-package main
+package chatgpt_test
 
 import (
 	"fmt"
+	"testing"
 
 	"github.com/GoFurself/devtools/pkg/chatgpt"
-	"github.com/GoFurself/devtools/pkg/logger"
-	"github.com/GoFurself/devtools/pkg/userops"
 )
 
-func main() {
-	userops.UserServiceFactory(userops.SQLite, userops.WithDataSourceName("user.db"))
-	logger := logger.NewSimpleLogger("main.log")
-	logger.Println("Starting the application...")
+func TestStuff(t *testing.T) {
 
 	cc := chatgpt.NewChatCompletion(
 		"sk-proj-DziSlJJpn0OXyNUCMbWgT3BlbkFJLNUYjsBYNq6npcx7oWlf",
