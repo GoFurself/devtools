@@ -7,10 +7,12 @@ import (
 	"github.com/GoFurself/devtools/pkg/chatgpt"
 )
 
+var apikey = "FAKE_API_KEY"
+
 func TestStuff(t *testing.T) {
 
 	cc := chatgpt.NewChatCompletion(
-		"sk-proj-DziSlJJpn0OXyNUCMbWgT3BlbkFJLNUYjsBYNq6npcx7oWlf",
+		apikey,
 		chatgpt.ModelGPT4,
 		2000,
 		chatgpt.HTTPRequestHandler,
