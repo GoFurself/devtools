@@ -26,7 +26,7 @@ func TestStuff(t *testing.T) {
 
 	response, err := cc.HandleRequest()
 	if err != nil {
-		fmt.Println("chatgpt return a error:", err)
+		fmt.Println("Chatgpt return a error:", err)
 		return
 	}
 
