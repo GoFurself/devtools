@@ -1,0 +1,1 @@
+This directory is typically used for the main applications of your project. Each application has its own subdirectory (example in this case), which contains a main.go file. This structure is helpful when your project needs to generate multiple executables.

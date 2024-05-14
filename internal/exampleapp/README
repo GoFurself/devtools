@@ -1,0 +1,1 @@
+        The internal folder is used to hold private application and library code. This code is not intended to be imported by other applications. It's a good place to keep the code that your executables need but should be hidden from other packages.
