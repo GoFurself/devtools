@@ -1,4 +1,4 @@
-package chatgpt
+package ChatGPTClient
 
 // * ChatCompletion Logic * //
 

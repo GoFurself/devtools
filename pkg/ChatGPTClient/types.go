@@ -1,4 +1,4 @@
-package chatgpt
+package ChatGPTClient
 
 // * Contains types and interfaces * //
 

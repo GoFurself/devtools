@@ -1,4 +1,4 @@
-package chatgpt
+package ChatGPTClient
 
 // * Contains implementations for interfaces defined in types.go * //
 
