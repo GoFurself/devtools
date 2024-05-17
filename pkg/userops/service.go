@@ -5,63 +5,70 @@ import (
 	"time"
 )
 
-type UserService struct {
+type UseropsService struct {
 	Repo   UserRepositoryInterface
 	Hasher Hasher
 }
 
-func newUserService(repo UserRepositoryInterface, hasher Hasher) *UserService {
-	return &UserService{
+func newUseropsService(repo UserRepositoryInterface, hasher Hasher) UseropsServiceInterface {
+	return &UseropsService{
 		Repo:   repo,
 		Hasher: hasher,
 	}
 }
 
-func (us *UserService) CreateUser(user *user) error {
+func (use UseropsService) CreateUser(user *user) error {
 
 	user.Created = time.Now()
 	user.Enabled = true
 	user.Metadata = "{}"
 
-	hashedPassword, err := us.HashPassword(user.Password)
+	hashedPassword, err := use.HashPassword(user.Password)
 	if err != nil {
 		return err
 	}
 	user.Password = hashedPassword
 
-	return us.Repo.CreateUser(user)
+	return use.Repo.CreateUser(user)
 }
 
-func (us *UserService) GetUserByID(id uint64) (*user, error) {
-	return us.Repo.GetUserByID(id)
+func (use UseropsService) GetUserByID(id uint64) (*user, error) {
+	return use.Repo.GetUserByID(id)
 }
 
-func (us *UserService) GetUserByEmail(email string) (*user, error) {
-	return us.Repo.GetUserByEmail(email)
+func (use UseropsService) GetUserByEmail(email string) (*user, error) {
+	return use.Repo.GetUserByEmail(email)
 }
 
-func (us *UserService) GetUsers(filter string) ([]*user, error) {
-	return us.Repo.GetUsers()
+func (use UseropsService) GetUsers(filter string) ([]*user, error) {
+	return use.Repo.GetUsers()
 }
 
-func (us *UserService) UpdateUser(user *user) error {
-	return us.Repo.UpdateUser(user)
+func (use UseropsService) UpdateUser(user *user) error {
+
+	hashedPassword, err := use.HashPassword(user.Password)
+	if err != nil {
+		return err
+	}
+	user.Password = hashedPassword
+
+	return use.Repo.UpdateUser(user)
 }
 
-func (us *UserService) DeleteUser(user *user) error {
-	return us.Repo.DeleteUser(user)
+func (use UseropsService) DeleteUser(user *user) error {
+	return use.Repo.DeleteUser(user)
 }
 
-func (us *UserService) EnableUser(user *user) error {
-	return us.Repo.EnableUser(user)
+func (use UseropsService) EnableUser(user *user) error {
+	return use.Repo.EnableUser(user)
 }
 
-func (us *UserService) DisableUser(user *user) error {
-	return us.Repo.DisableUser(user)
+func (use UseropsService) DisableUser(user *user) error {
+	return use.Repo.DisableUser(user)
 }
 
-func (us *UserService) AuthenticateUser(user *user, password string) (bool, error) {
-	valid, err := us.ValidatePassword(password, user.Password)
+func (use UseropsService) AuthenticateUser(user *user, password string) (bool, error) {
+	valid, err := use.ValidatePassword(password, user.Password)
 	if err != nil {
 		return false, err
 	}
@@ -71,16 +78,16 @@ func (us *UserService) AuthenticateUser(user *user, password string) (bool, erro
 	return true, nil
 }
 
-func (us *UserService) ValidatePassword(password string, hash string) (bool, error) {
-	valid, err := us.Hasher.CheckPassword(password, hash)
+func (use UseropsService) ValidatePassword(password string, hash string) (bool, error) {
+	valid, err := use.Hasher.CheckPassword(password, hash)
 	if err != nil {
 		return false, err
 	}
 	return valid, nil
 }
 
-func (us *UserService) HashPassword(password string) (string, error) {
-	hash, err := us.Hasher.HashPassword(password)
+func (use UseropsService) HashPassword(password string) (string, error) {
+	hash, err := use.Hasher.HashPassword(password)
 	if err != nil {
 		return "", err
 	}

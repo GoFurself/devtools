@@ -2,7 +2,6 @@ package userops
 
 import "time"
 
-// * User struct with fields for a user in the system *
 type user struct {
 	ID        uint64 `json:"id"`
 	FirstName string `json:"first_name"`

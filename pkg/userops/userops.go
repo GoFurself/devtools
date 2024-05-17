@@ -5,17 +5,18 @@ import (
 	"strings"
 )
 
-type RepoType int
+type ServiceType int
 
 const (
-	SQLite RepoType = iota
+	SQLite ServiceType = iota
 )
 
 type UserServiceFactoryOption func(*UserServiceFactoryOptions) error
 
 type UserServiceFactoryOptions struct {
-	RepoType       RepoType
+	ServiceType    ServiceType
 	DataSourceName string
+	Hasher         Hasher
 }
 
 func WithDataSourceName(dataSourceName string) UserServiceFactoryOption {
@@ -29,7 +30,18 @@ func WithDataSourceName(dataSourceName string) UserServiceFactoryOption {
 	}
 }
 
-func UserServiceFactory(repoType RepoType, options ...UserServiceFactoryOption) (UserServiceInterface, error) {
+func WithHasher(h Hasher) UserServiceFactoryOption {
+
+	return func(o *UserServiceFactoryOptions) error {
+		if h == nil {
+			return errors.New("Hasher cannot be nil")
+		}
+		o.Hasher = h
+		return nil
+	}
+}
+
+func NewUseropsService(st ServiceType, options ...UserServiceFactoryOption) (UseropsServiceInterface, error) {
 
 	opts := UserServiceFactoryOptions{}
 	for _, opt := range options {
@@ -38,7 +50,7 @@ func UserServiceFactory(repoType RepoType, options ...UserServiceFactoryOption) 
 		}
 	}
 
-	switch repoType {
+	switch st {
 	case SQLite:
 		if opts.DataSourceName == "" {
 			return nil, errors.New("missing DataSourceName for SQLite repo type")
@@ -54,7 +66,11 @@ func UserServiceFactory(repoType RepoType, options ...UserServiceFactoryOption) 
 			return nil, err
 		}
 
-		return newUserService(repo, NewHasherBCrypt(10)), nil
+		if opts.Hasher == nil {
+			opts.Hasher = NewHasherBCrypt(10)
+		}
+
+		return newUseropsService(repo, opts.Hasher), nil
 
 	default:
 		return nil, errors.New("invalid user service type")
