@@ -6,9 +6,9 @@ import (
 
 func TestNewUserWithUserOptions(t *testing.T) {
 
-	firstname := "Einar"
-	lastname := "Nystedt"
-	email := "einar.nystedt@centria.fi"
+	firstname := "Test"
+	lastname := "Testing"
+	email := "test@test"
 	password := "password"
 
 	user := NewUser(email, password,
@@ -16,11 +16,11 @@ func TestNewUserWithUserOptions(t *testing.T) {
 		WithLastName(lastname),
 		WithRole(1))
 
-	if user.FirstName != "Einar" {
-		t.Errorf("Expected first name Einar, got %s", user.FirstName)
+	if user.FirstName != firstname {
+		t.Errorf("Expected first name %s, got %s", firstname, user.FirstName)
 	}
-	if user.LastName != "Nystedt" {
-		t.Errorf("Expected last name %s, got %s", email, user.LastName)
+	if user.LastName != lastname {
+		t.Errorf("Expected last name %s, got %s", lastname, user.LastName)
 	}
 	if user.Email != email {
 		t.Errorf("Expected email %s, got %s", email, user.Email)
